@@ -82,6 +82,16 @@ def handle_command(cmd):
 
             blinkt.show()
             return
+        
+        if cmd.startswith("animate") and ":" in cmd:
+            cmd, data = cmd.split(":")
+            r, g, b = [int(x) for x in data.split(",")]
+            for i in range(8):
+                blinkt.set_pixel(i, r, g, b)
+                blinkt.show()
+                time.sleep(0.05)
+                blinkt.clear()
+                blinkt.show()
 
         # Expects a message formatted like: pixel.x.y:r,g,b
         if cmd.startswith("pixel.") and ":" in cmd:
@@ -89,6 +99,7 @@ def handle_command(cmd):
             cmd, index = cmd.split(".")
             pixels = [int(x) for x in data.split(",")]
             index = int(index)
+            return
 
             while len(pixels) > 0:
                 blinkt.set_pixel(index, pixels.pop(0), pixels.pop(0), pixels.pop(0))
