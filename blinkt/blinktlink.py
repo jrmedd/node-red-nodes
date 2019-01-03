@@ -92,6 +92,23 @@ def handle_command(cmd):
                 time.sleep(0.05)
                 blinkt.clear()
                 blinkt.show()
+        
+        if cmd.startswith("pulse") and ":" in cmd:
+            cmd, data = cmd.split(":")
+            r, g, b = [int(x) for x in data.split(",")]
+            num_steps = 20
+            for step in range(num_steps):
+                for i in range(8):
+                    blinkt.set_pixel(i, int((r/num_steps)*step), int((g/num_steps)*step), int((b/num_steps)*step))
+                blinkt.show()
+                time.sleep(0.01)
+            for step in range(num_steps):
+                for i in range(8):
+                    blinkt.set_pixel(i, int((r/num_steps)*(num_steps - step)), int((g/num_steps)*(num_steps - step)), int((b/num_steps)*(num_steps - step)))
+                blinkt.show()
+                time.sleep(0.01)
+            blinkt.clear()
+            blinkt.show()
 
         # Expects a message formatted like: pixel.x.y:r,g,b
         if cmd.startswith("pixel.") and ":" in cmd:
